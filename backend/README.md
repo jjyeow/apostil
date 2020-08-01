@@ -42,7 +42,7 @@ Minimum environment variables that needs to be set
 ```
 FLASK_APP='start' # based on the name of our entry point script
 FLASK_ENV='development' # use this in development, otherwise 'production' or 'test'
-DATABASE_URL="postgres://localhost:5432/nextagram_dev"
+DATABASE_URL="postgres://localhost:5432/subs_dev"
 SECRET_KEY= #generate your own key
 ```
 
@@ -62,7 +62,7 @@ _(see `database.py`)_
 - this application is configured to use Postgresql
 
 ```
-createdb nextagram_dev
+createdb subs_dev
 ```
 
 _\*if you name your database something else, tweak the settings in `.env`_
