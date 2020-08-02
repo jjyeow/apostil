@@ -1,7 +1,10 @@
 import React, { useState } from 'react'; 
 import { withStyles, makeStyles } from '@material-ui/core/styles'
 import TextField from '@material-ui/core/TextField'
+import Button from '@material-ui/core/Button'
+import { blue } from '@material-ui/core/colors'
 import axios from 'axios'
+import TopNavBar from '../components/TopNavBar'
 
 function SignUpPage() {
     const [data, setData] = useState({
@@ -23,16 +26,15 @@ function SignUpPage() {
         })
     }
 
-    const CssTextField = withStyles({
+    const ColorButton = withStyles((theme) => ({
         root: {
-          '& label.Mui-focused': {
-            color: 'purple',
-          },
-          '& .MuiInput-underline:after': {
-            borderBottomColor: 'purple',
+          color: theme.palette.getContrastText(blue[500]),
+          backgroundColor: blue[500],
+          '&:hover': {
+            backgroundColor: blue[700],
           },
         },
-      })(TextField);
+      }))(Button);
 
     const useStyles = makeStyles((theme) => ({
         root: {
@@ -90,30 +92,22 @@ function SignUpPage() {
 
     return (
         <div>
-            {/* <form className={classes.root} onSubmit={handleSubmit}>
-                <input onChange={handleInput} name="username" type="text" placeholder="Username" value={data.username}></input>
-                <input onChange={handleInput} name="first_name" type="text" placeholder="First Name" value={data.first_name}></input>
-                <input onChange={handleInput} name="last_name" type="text" placeholder="Last Name" value={data.last_name}></input>
-                <input onChange={handleInput} name="email" type="text" placeholder="Email" value={data.email}></input>
-                <input onChange={handleInput} name="hp_number" type="text" placeholder="Phone Number" value={data.hp_number}></input>
-                <input onChange={handleInput} name="password" type="password" placeholder="Password" value={data.password}></input>
-                <input onChange={handleInput} name="confirm_password" type="password" placeholder="Confirm Password" value={data.confirm_password}></input>
-                <input type="submit" />
-            </form> */}
-
-            <form className={classes.root} noValidate onSubmit={handleSubmit}>
-                <CssTextField type="text" className={classes.margin} id="custom-css-standard-input1" label="Username" name="username" onChange={handleInput} defaultValue={username}/>
-                {console.log(username)}
-                <CssTextField name="first_name" className={classes.margin} id="custom-css-standard-input2" label="First Name" value={first_name} onChange={handleInput}/>
-                <CssTextField name="last_name" className={classes.margin} id="custom-css-standard-input3" label="Last Name" value={last_name} onChange={handleInput}/>
-                <CssTextField name="email" className={classes.margin} id="custom-css-standard-input4" label="Email" value={email} onChange={handleInput}/>
-                <CssTextField name="hp_number" className={classes.margin} id="custom-css-standard-input5" label="Phone Number" value={hp_number} onChange={handleInput}/>
-                <CssTextField name="password" className={classes.margin} id="custom-css-standard-input6" type="password" label="Password" value={password} onChange={handleInput}/>
-                <CssTextField name="confirm_password" className={classes.margin} id="custom-css-standard-input7" type="password" label="Confirm Password" value={confirm_password} onChange={handleInput}/>
-                <input type="submit"/>
-
-            </form>
-
+            <TopNavBar title="Sign Up" backpath="/"/>
+            <div id="signup-container">
+                <form id="signup" className={classes.root} noValidate onSubmit={handleSubmit}>
+                    <TextField className={classes.margin} type="text" label="Username" name="username" onChange={handleInput} value={username}/>
+                    <TextField className={classes.margin} type="text" label="First Name" name="first_name" onChange={handleInput} value={first_name}/>
+                    <TextField className={classes.margin} type="text" label="Last Name" name="last_name" onChange={handleInput} value={last_name}/>
+                    <TextField className={classes.margin} type="text" label="Email" name="email" onChange={handleInput} value={email}/>
+                    <TextField className={classes.margin} type="text" label="Phone Number" name="hp_number" onChange={handleInput} value={hp_number}/>
+                    <TextField className={classes.margin} type="password" label="Password" name="password" onChange={handleInput} value={password}
+                               helperText="*Make sure your password is at least 6 letter long, with at least a capital letter, special character and number!"/>
+                    <TextField className={classes.margin} type="password" label="Confirm Password" name="confirm_password" onChange={handleInput} value={confirm_password}/>
+                    <ColorButton type="submit" variant="contained" color="primary">
+                        Submit
+                    </ColorButton>
+                </form>
+            </div>
         </div>
     )
 }
