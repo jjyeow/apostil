@@ -38,11 +38,11 @@
 }
 
 .MuiInput-underline:after {
-   border-bottom: 2px solid #2E86C1 !important;
+   border-bottom: 2px solid #00004d !important;
 }
 
 label.Mui-focused {
-  color: #2E86C1 !important;
+  color: #00004d !important;
 }
 
 #signup-container {
@@ -54,4 +54,40 @@ label.Mui-focused {
   width: 80vw;
   margin: auto;
   flex-direction: column;
+}
+
+.body {
+  height: 100vh;
+  background-image: white;
+}
+
+.MuiIconButton-root {
+  color: white !important;
+}
+
+#login-container {
+  top: 55px;
+  position: fixed;
+  width: 100%;
+}
+
+#login {
+  width: 80vw;
+  margin: auto;
+  flex-direction: column;
+}
+
+.Toastify__toast--success {
+  background: #4d4dff !important;
+  /* background: #482278 !important; */
+  /* border-radius: 10px !important; */
+  text-align: center;
+  min-height:50px !important;
+}
+
+.Toastify__toast--error {
+  background-color: #ed5858 !important;
+  /* border-radius: 10px !important; */
+  text-align: center;  
+  min-height:50px !important;
 }

@@ -4,7 +4,11 @@ import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
 import { blue } from '@material-ui/core/colors'
 import axios from 'axios'
+import { useHistory } from 'react-router-dom'
 import TopNavBar from '../components/TopNavBar'
+import customToast from '../components/Toast'
+import { ToastContainer } from 'react-toastify' 
+import 'react-toastify/dist/ReactToastify.css';
 
 function SignUpPage() {
     const [data, setData] = useState({
@@ -16,6 +20,8 @@ function SignUpPage() {
         password: "",
         confirm_password: "",
     })
+
+    const history = useHistory()
 
     const handleInput = e => {
         const {name, value} = e.target
@@ -29,9 +35,12 @@ function SignUpPage() {
     const ColorButton = withStyles((theme) => ({
         root: {
           color: theme.palette.getContrastText(blue[500]),
-          backgroundColor: blue[500],
+          backgroundColor: '#00004d',
+          marginTop: '30px',
+
           '&:hover': {
-            backgroundColor: blue[700],
+            backgroundColor: '#00004d',
+            transform: 'scale(1.1)',
           },
         },
       }))(Button);
@@ -56,8 +65,15 @@ function SignUpPage() {
         e.preventDefault()
         
         if (data.confirm_password !== data.password) {
-            console.log("WRONG PASSWORD")
-        } else {
+            customToast.error('Confirm Password are different!', {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true
+              })
+        } else {            
             axios({
                 method: 'POST',
                 url: 'http://localhost:5000/api/v1/users/signup',
@@ -80,10 +96,27 @@ function SignUpPage() {
                     password: "",
                     confirm_password: ""
                 })
+                history.push('/login')
+                console.log(response.data.message)
+                customToast.success(response.data.message, {
+                    position: "top-left",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true
+                  });
                 console.log(response)
             })
             .catch(error => {
-                console.log(error.response)
+                error.response.data.message.forEach(msg => customToast.error(msg, {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true
+                }))
             })
 
         }
@@ -92,6 +125,7 @@ function SignUpPage() {
 
     return (
         <div>
+            <ToastContainer closeButton={false} autoClose={5000} style={{marginTop: '54px'}} />
             <TopNavBar title="Sign Up" backpath="/"/>
             <div id="signup-container">
                 <form id="signup" className={classes.root} noValidate onSubmit={handleSubmit}>

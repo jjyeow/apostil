@@ -5,13 +5,17 @@ import ArrowBackRoundedIcon from '@material-ui/icons/ArrowBackRounded'
 import IconButton from '@material-ui/core/IconButton'
 
 const navbar_style = {
-    background: blue[300],
+    background: '#00004d',
+    color: 'white',
     width: '100vw',
     display: 'flex',
     justifyContent: 'space-between',
     position: 'fixed',
     height: '54px',
-    lineHeight: '54px'
+    lineHeight: '54px',
+    top: 0,
+    left: 0,
+    right: 0
     
 }
 

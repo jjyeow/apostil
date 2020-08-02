@@ -8,7 +8,7 @@ web_dir = os.path.join(os.path.dirname(
     os.path.abspath(__file__)), 'subs_web')
 
 app = Flask('SUBS', root_path=web_dir)
-
+jwt = JWTManager(app)
 if os.getenv('FLASK_ENV') == 'production':
     app.config.from_object("config.ProductionConfig")
 else:
