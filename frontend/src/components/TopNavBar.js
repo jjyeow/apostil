@@ -1,6 +1,5 @@
 import React from 'react' 
 import { Link } from 'react-router-dom'
-import { blue } from '@material-ui/core/colors'
 import ArrowBackRoundedIcon from '@material-ui/icons/ArrowBackRounded'
 import IconButton from '@material-ui/core/IconButton'
 
@@ -31,8 +30,8 @@ const TopNavBar = ({ title, backpath }) => {
         <div>
             <div style={navbar_style}>
                 <Link to={backpath}>
-                    <IconButton>
-                        <ArrowBackRoundedIcon />
+                    <IconButton >
+                        <ArrowBackRoundedIcon style={{fill: "white"}}/>
                     </IconButton>
                 </Link>
                 <b style={title_style}>{title}</b>

@@ -9,6 +9,7 @@ users_api_blueprint = Blueprint('users_api',
 
 @users_api_blueprint.route('/', methods=['GET'])
 def index():
+    breakpoint()
     return "USERS API"
 
 @users_api_blueprint.route('/signup', methods = ['POST'])
@@ -80,3 +81,5 @@ def login():
             'message': 'Incorrect username!'
         }  
         return jsonify(responseObj), 400
+
+

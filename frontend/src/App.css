@@ -61,9 +61,9 @@ label.Mui-focused {
   background-image: white;
 }
 
-.MuiIconButton-root {
+/* .MuiIconButton-root {
   color: white !important;
-}
+} */
 
 #login-container {
   top: 55px;
@@ -91,3 +91,18 @@ label.Mui-focused {
   text-align: center;  
   min-height:50px !important;
 }
+
+/* .MuiInputBase-input {
+  height: 30vh !important;
+  font-size: 10vw !important;
+  margin-right: 15vw !important;
+}
+
+.MuiTypography-body1 {
+  font-size: 6vw !important;
+  margin-left: 5vw !important;
+}
+
+.MuiFormControl-root {
+  margin: 10px !important;
+} */
