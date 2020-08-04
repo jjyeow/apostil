@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect} from 'react'
 import { withStyles, makeStyles } from '@material-ui/core/styles';
 import CurrencyFormat from 'react-currency-format';
 import TextField from '@material-ui/core/TextField';
@@ -17,8 +17,6 @@ import Button from '@material-ui/core/Button'
 import axios from 'axios';
 import TopNavBar from '../components/TopNavBar'
 
-
-
 const useStyles = makeStyles((theme) => ({
     formControl: {
       margin: theme.spacing(1),
@@ -29,17 +27,15 @@ const useStyles = makeStyles((theme) => ({
     },
   }));
 
-
-function AddSubs() {
+function EditSubs(props) {
     const jwt = localStorage.getItem('jwt')
     const classes= useStyles()
-    const [subsInfo, setSubsInfo] = useState({
-        name:"",
-        description: "",
-        amount: "",
-        payment_date: new Date(),
-        subs_type: "",
-        frequency: "",
+    const [initialSub, setInitialSub] = useState({
+        name: '',
+        amount: 0.00,
+        description: '',
+        frequency: '',
+        payment_date: new Date()
     })
 
     const moneyInputStyle={
@@ -52,56 +48,81 @@ function AddSubs() {
     const handleInput = e => {
         const {name, value} = e.target
 
-        setSubsInfo({
-            ...subsInfo,
+        setInitialSub({
+            ...initialSub,
             [name]: value
         })
     }
 
     const handleChange = e => {
-        setSubsInfo({
-            ...subsInfo,
+        setInitialSub({
+            ...initialSub,
             subs_type: e.target.value
         })
     }
 
     const handleDateChange = (date) => {
-        setSubsInfo({
-            ...subsInfo,
+        setInitialSub({
+            ...initialSub,
             payment_date: date
         });
     };
 
-    const handleSubmit = e => {
+    const hanldeSubmit = e => {
         e.preventDefault()
         axios({
-            method: 'POST',
-            url: 'http://localhost:5000/api/v1/features/',
+            method: 'post',
+            url: `http://localhost:5000/api/v1/features/edit/${props.location.state.data}`,
             data: {
-                name: subsInfo.name,
-                amount: subsInfo.amount,
-                payment_date: subsInfo.payment_date,
-                subs_type: subsInfo.subs_type,
-                frequency: subsInfo.frequency,
-                description: subsInfo.description
+                name: initialSub.name,
+                amount: initialSub.amount,
+                description: initialSub.description,
+                frequency: initialSub.frequency,
+                payment_date: initialSub.payment_date,
+                subs_type: initialSub.subs_type
             },
             headers: {
-                Authorization: `Bearer ${jwt}`,
+                Authorization: `Bearer ${jwt}`
             }
         })
         .then(response => {
-            setSubsInfo({
-                name:"",
-                description: "",
-                amount: "",
-                payment_date: new Date(),
-                subs_type: "",
-                frequency: "",
+            setInitialSub({
+                name: '',
+                amount: 0.00,
+                description: '',
+                frequency: '',
+                payment_date: new Date()
             })
-            console.log(response)
         })
         .catch(error => {
             console.log(error.response)
+        })
+    }
+
+    
+
+    const get_subs = () => {
+        axios({
+            method: 'post',
+            url: `http://localhost:5000/api/v1/features/sub_data/${props.location.state.data}`,
+            headers: {
+                Authorization: `Bearer ${jwt}`
+            },
+        })
+        .then(result => {
+            console.log(result.data)
+            const {name, amount, description} = result.data.subscriptions
+            setInitialSub({
+                name: name,
+                amount: amount,
+                description: description, 
+                frequency: '',
+                subs_type: ''
+            })
+        })
+
+        .catch(err => {
+            console.log(err.response)
         })
     }
 
@@ -117,24 +138,29 @@ function AddSubs() {
         },
         },
     }))(Button);
-    const enabled = subsInfo.name.length > 0  && subsInfo.amount.length > 0 && subsInfo.frequency.length > 0 && subsInfo.subs_type.length > 0
-    return(
+    const enabled = initialSub.name.length > 0  && initialSub.amount.length > 0 && initialSub.frequency.length > 0 && initialSub.subs_type.length > 0
+
+    // get_subs()
+
+    useEffect(get_subs,[])
+
+    return (
         <div>
             <TopNavBar title="" backpath="/home" />
-            <form noValidate onSubmit={handleSubmit}>
+            <form noValidate onSubmit={hanldeSubmit}>
                 <div style={{display: 'flex', 
                             position:"relative",
                             justifyContent: 'center',
                             margin: '70px 10px 10px 10px '}}>
                     
-                    <CurrencyFormat value={subsInfo.amount} 
+                    <CurrencyFormat value={initialSub.amount} 
                                     displayType={'input'} 
                                     thousandSeparator={true} 
                                     
                                     onValueChange={(values)=>{
                                         const {formattedValue, value} = values;
-                                        setSubsInfo({
-                                            ...subsInfo,
+                                        setInitialSub({
+                                            ...initialSub,
                                             amount: value
                                         })
                                     }}
@@ -166,7 +192,7 @@ function AddSubs() {
                         variant="outlined"
                         name="name"
                         onChange={handleInput}
-                        value={subsInfo.name}
+                        value={initialSub.name}
                     />
                     <TextField
                         id="outlined-margin-none"
@@ -182,7 +208,7 @@ function AddSubs() {
                         variant="outlined"
                         name="description"
                         onChange={handleInput}
-                        value={subsInfo.description}
+                        value={initialSub.description}
                     />
 
                     <div style={{
@@ -204,14 +230,14 @@ function AddSubs() {
                             variant="outlined"
                             name="frequency"
                             onChange={handleInput}
-                            value={subsInfo.frequency}
+                            value={initialSub.frequency}
                         />
                         <FormControl variant="outlined" className={classes.formControl}>
                             <InputLabel id="demo-simple-select-outlined-label">Period</InputLabel>
                             <Select
                             labelId="demo-simple-select-outlined-label"
                             id="demo-simple-select-outlined"
-                            value={subsInfo.subs_type}
+                            value={initialSub.subs_type}
                             onChange={handleChange}
                             label="Period"
                             >
@@ -222,7 +248,6 @@ function AddSubs() {
                             </Select>
                         </FormControl>
 
-                        {console.log(subsInfo)}
                     </div>
 
                     <MuiPickersUtilsProvider utils={DateFnsUtils}>
@@ -233,7 +258,7 @@ function AddSubs() {
                             label="Billing Date"
                             style={{width: '100%'}}
                             format="yyyy/MM/dd"
-                            value={subsInfo.payment_date}
+                            value={initialSub.payment_date}
                             onChange={handleDateChange}
                             KeyboardButtonProps={{
                                 'aria-label': 'change date',
@@ -243,7 +268,7 @@ function AddSubs() {
                     </MuiPickersUtilsProvider>
 
                     <ColorButton type="submit" variant="contained" color="primary" disabled={!enabled} >
-                        Submit
+                        COMFIRM
                     </ColorButton>
                 </div>
                     
@@ -252,4 +277,4 @@ function AddSubs() {
     )
 }
 
-export default AddSubs
+export default EditSubs

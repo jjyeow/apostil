@@ -36,7 +36,7 @@ function SignUpPage() {
         root: {
           color: theme.palette.getContrastText(blue[500]),
           backgroundColor: '#00004d',
-          marginTop: '30px',
+          marginTop: '10px',
 
           '&:hover': {
             backgroundColor: '#00004d',

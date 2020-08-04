@@ -3,11 +3,22 @@ import config
 from flask import Flask
 from models.base_model import db
 from flask_jwt_extended import JWTManager
+import decimal
+import flask.json
 
 web_dir = os.path.join(os.path.dirname(
     os.path.abspath(__file__)), 'subs_web')
 
 app = Flask('SUBS', root_path=web_dir)
+
+class MyJSONEncoder(flask.json.JSONEncoder):
+    def default(self, obj):
+        if isinstance(obj, decimal.Decimal):
+            # Convert decimal instances to strings.
+            return str(obj)
+        return super(MyJSONEncoder, self).default(obj)
+app.json_encoder = MyJSONEncoder
+
 jwt = JWTManager(app)
 if os.getenv('FLASK_ENV') == 'production':
     app.config.from_object("config.ProductionConfig")
