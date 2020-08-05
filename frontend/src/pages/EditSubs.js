@@ -1,4 +1,5 @@
 import React, { useState, useEffect} from 'react'
+import { useHistory } from 'react-router-dom'
 import { withStyles, makeStyles } from '@material-ui/core/styles';
 import CurrencyFormat from 'react-currency-format';
 import TextField from '@material-ui/core/TextField';
@@ -30,6 +31,7 @@ const useStyles = makeStyles((theme) => ({
 function EditSubs(props) {
     const jwt = localStorage.getItem('jwt')
     const classes= useStyles()
+    const history = useHistory()
     const [initialSub, setInitialSub] = useState({
         name: '',
         amount: 0.00,
@@ -102,6 +104,7 @@ function EditSubs(props) {
                 frequency: '',
                 payment_date: new Date()
             })
+            history.push('/home')
         })
         .catch(error => {
             console.log(error.response)

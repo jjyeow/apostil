@@ -80,17 +80,22 @@ def subscription():
     current_user = User.get_by_id(user_id)
     subs_obj = Subscription.select().where(Subscription.user_id == current_user.id).order_by(Subscription.id.asc())
     subs_arr = []
+    monthly_amount = 0
     if subs_obj:
         for sub in subs_obj: 
             str_amount = ""
             if sub.subs_type == "yearly" and sub.amount is not None:
                 str_amount = "RM" + str(sub.amount) + "/y"
+                monthly_amount = monthly_amount + (sub.amount/12)
             elif sub.subs_type == "monthly" and sub.amount is not None:
                 str_amount = "RM" + str(sub.amount) + "/m"
+                monthly_amount = monthly_amount + sub.amount
             elif sub.subs_type == "weekly" and sub.amount is not None:
                 str_amount = "RM" + str(sub.amount) + "/w"
+                monthly_amount = monthly_amount + (sub.amount*4)
             elif sub.subs_type == "daily" and sub.amount is not None:
                 str_amount = "RM" + str(sub.amount) + "/d"
+                monthly_amount = monthly_amount + (sub.amount*30)
 
             temp_date = sub.next_payment
             if (sub.next_payment - date.today()).days <= 0 and sub.paid == True:
@@ -135,7 +140,8 @@ def subscription():
         
         responseObj = {
             'status': 'success',
-            'subscriptions': subs_arr
+            'subscriptions': subs_arr,
+            'monthly_amount': monthly_amount
         }
 
         return jsonify(responseObj), 200
@@ -143,7 +149,8 @@ def subscription():
     else:
         responseObj = {
             'status': 'success but array is empty',
-            'subscriptions': subs_arr
+            'subscriptions': subs_arr,
+            'monthly_amount': monthly_amount
         }
 
         return jsonify(responseObj), 200

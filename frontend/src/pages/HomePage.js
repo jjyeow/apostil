@@ -19,6 +19,7 @@ import axios from 'axios';
 const useStyles = makeStyles({
     root: {
         margin: '20px',
+        border: 'solid 2px black'
 
     },
     title: {
@@ -26,7 +27,9 @@ const useStyles = makeStyles({
     },
     pos: {
         marginTop: 10,
-        fontSize: '10px'
+        fontSize: '14px',
+        fontFamily: 'Crete Round, serif',
+        textTransform: 'none'
     },
     closePos: {
         position: 'absolute', 
@@ -34,26 +37,27 @@ const useStyles = makeStyles({
         top: '-2px'
     },
 
-    amountPos: {
-        fontFamily: 'san-serif',
-        fontSize: 10,
-        position: 'absolute',
-        right: '15px',
-        top: '48px'
-    },
+    // amountPos: {
+    //     fontFamily: 'san-serif',
+    //     fontSize: 10,
+    //     position: 'absolute',
+    //     right: '15px',
+    //     top: '48px'
+    // },
 
     paidPos: {
         position: 'absolute', 
-        border: 'solid 1px black',
+        fontWeight: 'bold',
         padding: 3,
-        right: '30px',
-        top: '-3px'
+        right: '-10px',
+        bottom: '-2px',
+        fontFamily: 'Bree Serif, serif'
     },
 
     editPos: {
         position: 'absolute', 
-        right: '-15px',
-        bottom: '-2px'
+        right: '30px',
+        top: '-3px'
     },
 
     duePos: {
@@ -120,6 +124,7 @@ function HomePage() {
     const [open, setOpen] = useState(false)
     const [modal, setModal] = useState({})
     const [isLoading, setIsLoading] = useState(true)
+    const [monthlyAmount, setMonthlyAmount] = useState(0)
 
     const handleOpen = (subs) => {
         setOpen(true)
@@ -180,6 +185,7 @@ function HomePage() {
         })
         .then(result => {
             setUserSubs(result.data.subscriptions)
+            setMonthlyAmount(result.data.monthly_amount)
             setIsLoading(false)
         })
         .catch(err => {
@@ -202,19 +208,21 @@ function HomePage() {
             <Link to="/settings">
                 <button>Settings</button>
             </Link>
-            <h1>Hello</h1>
+            <h1 style={{fontFamily: 'Merriweather, serif'}}>{(Math.round(monthlyAmount*100)/100).toFixed(2)}</h1>
             {userSubs.map(subs => (
-                <Card className={classes.root} style={  subs.name.toLowerCase() == "netflix" ? {backgroundColor: '#E50914'} : 
-                                                        subs.name.toLowerCase() == "spotify" ? {backgroundColor: '#1DB954'} : null} >
+                <Card className={classes.root} >
                 <CardActions style={{position: 'relative'}}>
                     <Button onClick={() => { handleOpen(subs)}} name={subs.id}>
                     {/* <Button onClick={() => { handleClickOpen(history) }} name={history.id} > */}
                         <CardContent style={{ width: "90vw", textAlign: "left" }}>
-                            <Typography variant="h5" component="h2">
+                            <Typography variant="h5" component="h2" style={     subs.name.toLowerCase() == "netflix" ? {color: '#E50914', fontFamily:'Arvo, serif'} : 
+                                                                                subs.name.toLowerCase() == "spotify" ? {color: '#1DB954', fontFamily:'Arvo, serif'} : 
+                                                                                subs.name.toLowerCase() == "water" ? {color: '#2bc2d9', fontFamily:'Arvo, serif'} : 
+                                                                                subs.name.toLowerCase() == "electricity" || subs.name.toLowerCase() == "electric" ? {color: '#f2f222', fontFamily:'Arvo, serif'} : {fontFamily:'Arvo, serif'}}>
                                 {subs.name}
                             </Typography>
-                            <Typography className={classes.pos}>Next Payment: {subs.next_payment}</Typography>
-                            <Typography className={classes.amountPos}>{subs.str_amount}</Typography>
+                            <Typography className={classes.pos}>Next Payment: {subs.next_payment.toUpperCase()}</Typography>
+                            <Typography className={classes.pos}>{subs.str_amount}</Typography>
                             {subs.paid ? <Typography className={classes.paidPos}>Paid</Typography> : null}
                             {subs.due ? <Typography className={classes.duePos}>Due</Typography> : null}
                         </CardContent>
@@ -234,14 +242,16 @@ function HomePage() {
                 </Card>
             ))}
 
-        <Dialog onClose={handleClose} aria-labelledby="customized-dialog-title" open={open} >
-            <DialogTitle id="customized-dialog-title" onClose={handleClose} style={ !open ? null : modal.name.toLowerCase() == "netflix" ? {backgroundColor: '#E50914'} : 
-                                                                                    modal.name.toLowerCase() == "spotify" ? {backgroundColor: '#1DB954'} : null}>
+        <Dialog onClose={handleClose} aria-labelledby="customized-dialog-title" open={open}  >
+            <DialogTitle id="customized-dialog-title" onClose={handleClose} style={ !open ? null : modal.name.toLowerCase() == "netflix" ? {backgroundColor: '#E50914', fontFamily: 'Arvo,serif'} : 
+                                                                                    modal.name.toLowerCase() == "spotify" ? {backgroundColor: '#1DB954', fontFamily: 'Arvo,serif'} : 
+                                                                                    modal.name.toLowerCase() == "water" ? {backgroundColor: '#2bc2d9', fontFamily: 'Arvo,serif'} : 
+                                                                                    modal.name.toLowerCase() == "electricity" || modal.name.toLowerCase() == "electric" ? {backgroundColor: '#f2f222', fontFamily:'Arvo, serif'} : {fontFamily: 'Arvo,serif'}}>
                 {modal.name}
             </DialogTitle>
             <DialogContent dividers>
                 <Typography gutterBottom>
-                    <table style={{margin: 'auto'}} >
+                    <table style={{margin: 'auto', fontFamily: 'Crete Round, serif' }} >
                         <tr>
                             <td style={{padding: '8px 10px 0 0'}}>Next Payment: </td>
                             <td style={{padding: '8px 0 0 0'}}>{modal.next_payment}</td>
@@ -262,7 +272,10 @@ function HomePage() {
                     </table>
                 </Typography>
             </DialogContent>
-            <ColorButton type="submit" variant="contained" color="primary" onClick={handlePaid} name={modal.id}>
+            <ColorButton type="submit" variant="contained" color="primary" onClick={handlePaid} name={modal.id} style={ !open ? null :  modal.name.toLowerCase() == "netflix" ? {backgroundColor: '#E50914', color: 'black'} :
+                                                                                                                                        modal.name.toLowerCase() == "spotify" ? {backgroundColor: '#1DB954', color: 'black'} :
+                                                                                                                                        modal.name.toLowerCase() == "water" ? {backgroundColor: '#2bc2d9', color: 'black'} :
+                                                                                                                                        modal.name.toLowerCase() == "electricity" || modal.name.toLowerCase() == "electric" ? {backgroundColor: '#f2f222', color: 'black'} : {color: 'white'}}>
                 {modal.paid ? "Unpaid" : "Paid" }
             </ColorButton>
         </Dialog>

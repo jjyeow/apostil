@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { useHistory } from 'react-router-dom'
 import { withStyles, makeStyles } from '@material-ui/core/styles';
 import CurrencyFormat from 'react-currency-format';
 import TextField from '@material-ui/core/TextField';
@@ -35,6 +36,7 @@ function AddSubs() {
     
     const jwt = localStorage.getItem('jwt')
     const classes= useStyles()
+    const history = useHistory()
     const [subsInfo, setSubsInfo] = useState({
         name:"",
         description: "",
@@ -112,7 +114,7 @@ function AddSubs() {
                 subs_type: "",
                 frequency: "",
             })
-            console.log(response)
+            history.push('/home')
         })
         .catch(error => {
             console.log(error.response)

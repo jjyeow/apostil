@@ -13,6 +13,11 @@
   }
 }
 
+@import url("https://fonts.googleapis.com/css2?family=Arvo:wght@700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Crete+Round&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Bree+Serif&family=Crete+Round&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Bree+Serif&family=Crete+Round&family=Merriweather:wght@700&display=swap");
+
 .App-header {
   background-color: #282c34;
   min-height: 100vh;
@@ -92,17 +97,6 @@ label.Mui-focused {
   min-height:50px !important;
 }
 
-/* .MuiInputBase-input {
-  height: 30vh !important;
-  font-size: 10vw !important;
-  margin-right: 15vw !important;
+.MuiTypography-h6 {
+  font-family: 'Arvo', serif !important;
 }
-
-.MuiTypography-body1 {
-  font-size: 6vw !important;
-  margin-left: 5vw !important;
-}
-
-.MuiFormControl-root {
-  margin: 10px !important;
-} */
