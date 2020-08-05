@@ -54,6 +54,14 @@ const useStyles = makeStyles({
         position: 'absolute', 
         right: '-15px',
         bottom: '-2px'
+    },
+
+    duePos: {
+        position: 'absolute',
+        border: 'solid 1px black',
+        padding: 3,
+        right: '30px',
+        bottom: '-2px'
     }
 });
 
@@ -111,7 +119,6 @@ function HomePage() {
     const jwt = localStorage.getItem('jwt')
     const [open, setOpen] = useState(false)
     const [modal, setModal] = useState({})
-    const [paid, setPaid] = useState(true)
     const [isLoading, setIsLoading] = useState(true)
 
     const handleOpen = (subs) => {
@@ -134,7 +141,9 @@ function HomePage() {
             },
         })
         .then(result => {
+            setIsLoading(true)
             setUserSubs(result.data.subscriptions)
+            setIsLoading(false)
         })
         
         .catch(err => {
@@ -176,7 +185,7 @@ function HomePage() {
         .catch(err => {
             console.log(err.response)
         })
-    },[])
+    })
 
     
     if (isLoading) {
@@ -189,6 +198,9 @@ function HomePage() {
             <ToastContainer closeButton={false} autoClose={5000} style={{marginTop: '54px'}}/>
             <Link to="/add">
                 <button>Add</button>
+            </Link>
+            <Link to="/settings">
+                <button>Settings</button>
             </Link>
             <h1>Hello</h1>
             {userSubs.map(subs => (
@@ -204,6 +216,7 @@ function HomePage() {
                             <Typography className={classes.pos}>Next Payment: {subs.next_payment}</Typography>
                             <Typography className={classes.amountPos}>{subs.str_amount}</Typography>
                             {subs.paid ? <Typography className={classes.paidPos}>Paid</Typography> : null}
+                            {subs.due ? <Typography className={classes.duePos}>Due</Typography> : null}
                         </CardContent>
                     </Button>
                     <Button className={classes.closePos} name={subs.id} onClick={handleDelete}>

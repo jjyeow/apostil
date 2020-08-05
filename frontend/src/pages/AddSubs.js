@@ -16,6 +16,7 @@ import {
 import Button from '@material-ui/core/Button'
 import axios from 'axios';
 import TopNavBar from '../components/TopNavBar'
+import { setYear } from 'date-fns';
 
 
 
@@ -31,6 +32,7 @@ const useStyles = makeStyles((theme) => ({
 
 
 function AddSubs() {
+    
     const jwt = localStorage.getItem('jwt')
     const classes= useStyles()
     const [subsInfo, setSubsInfo] = useState({
@@ -41,6 +43,8 @@ function AddSubs() {
         subs_type: "",
         frequency: "",
     })
+
+    
 
     const moneyInputStyle={
         width: '75vw',
@@ -74,13 +78,23 @@ function AddSubs() {
 
     const handleSubmit = e => {
         e.preventDefault()
+        let day = '' + subsInfo.payment_date.getDate()
+        let month ='' + (subsInfo.payment_date.getMonth() + 1)
+        let year = '' + subsInfo.payment_date.getFullYear()
+        if (day.length == 1) {
+            day = '0' + day
+        }
+        if (month.length == 1) {
+            month = '0' + month
+        }
+
         axios({
             method: 'POST',
             url: 'http://localhost:5000/api/v1/features/',
             data: {
                 name: subsInfo.name,
                 amount: subsInfo.amount,
-                payment_date: subsInfo.payment_date,
+                payment_date: `${year}-${month}-${day}`,
                 subs_type: subsInfo.subs_type,
                 frequency: subsInfo.frequency,
                 description: subsInfo.description
@@ -117,6 +131,8 @@ function AddSubs() {
         },
         },
     }))(Button);
+    
+
     const enabled = subsInfo.name.length > 0  && subsInfo.amount.length > 0 && subsInfo.frequency.length > 0 && subsInfo.subs_type.length > 0
     return(
         <div>
@@ -222,7 +238,6 @@ function AddSubs() {
                             </Select>
                         </FormControl>
 
-                        {console.log(subsInfo)}
                     </div>
 
                     <MuiPickersUtilsProvider utils={DateFnsUtils}>

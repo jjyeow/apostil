@@ -7,6 +7,7 @@ import SignUpPage from './pages/SignUpPage'
 import HomePage from './pages/HomePage'
 import AddSubs from './pages/AddSubs'
 import EditSubs from './pages/EditSubs'
+import Settings from './pages/Settings'
 import { ToastContainer } from 'react-toastify'
 
 
@@ -20,6 +21,7 @@ function App() {
         <Route path="/home" component={HomePage} />
         <Route path="/add" component={AddSubs} />
         <Route path="/edit" component={EditSubs} />
+        <Route path="/settings" component={Settings} />
       </div>
   );
 }

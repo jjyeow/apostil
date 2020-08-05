@@ -70,6 +70,15 @@ function EditSubs(props) {
 
     const hanldeSubmit = e => {
         e.preventDefault()
+        let day = '' + initialSub.payment_date.getDate()
+        let month ='' + (initialSub.payment_date.getMonth() + 1)
+        let year = '' + initialSub.payment_date.getFullYear()
+        if (day.length == 1) {
+            day = '0' + day
+        }
+        if (month.length == 1) {
+            month = '0' + month
+        }
         axios({
             method: 'post',
             url: `http://localhost:5000/api/v1/features/edit/${props.location.state.data}`,
@@ -78,7 +87,7 @@ function EditSubs(props) {
                 amount: initialSub.amount,
                 description: initialSub.description,
                 frequency: initialSub.frequency,
-                payment_date: initialSub.payment_date,
+                payment_date: `${year}-${month}-${day}`,
                 subs_type: initialSub.subs_type
             },
             headers: {
@@ -98,26 +107,25 @@ function EditSubs(props) {
             console.log(error.response)
         })
     }
-
     
 
     const get_subs = () => {
         axios({
-            method: 'post',
+            method: 'get',
             url: `http://localhost:5000/api/v1/features/sub_data/${props.location.state.data}`,
             headers: {
                 Authorization: `Bearer ${jwt}`
             },
         })
         .then(result => {
-            console.log(result.data)
             const {name, amount, description} = result.data.subscriptions
             setInitialSub({
                 name: name,
                 amount: amount,
                 description: description, 
                 frequency: '',
-                subs_type: ''
+                subs_type: '',
+                payment_date: new Date(),
             })
         })
 
@@ -139,9 +147,7 @@ function EditSubs(props) {
         },
     }))(Button);
     const enabled = initialSub.name.length > 0  && initialSub.amount.length > 0 && initialSub.frequency.length > 0 && initialSub.subs_type.length > 0
-
     // get_subs()
-
     useEffect(get_subs,[])
 
     return (

@@ -78,7 +78,7 @@ def add():
 def subscription():
     user_id = get_jwt_identity()
     current_user = User.get_by_id(user_id)
-    subs_obj = Subscription.select().where(Subscription.user_id == current_user.id).order_by(Subscription.id.desc())
+    subs_obj = Subscription.select().where(Subscription.user_id == current_user.id).order_by(Subscription.id.asc())
     subs_arr = []
     if subs_obj:
         for sub in subs_obj: 
@@ -92,6 +92,32 @@ def subscription():
             elif sub.subs_type == "daily" and sub.amount is not None:
                 str_amount = "RM" + str(sub.amount) + "/d"
 
+            temp_date = sub.next_payment
+            if (sub.next_payment - date.today()).days <= 0 and sub.paid == True:
+                if sub.subs_type == "daily":
+                    new_next_payment = add_days(temp_date, int(sub.frequency))
+                    query = Subscription.update(payment_date = temp_date, next_payment = new_next_payment, paid = False, due = False).where(Subscription.id == sub.id) 
+                    query.execute()
+                
+                elif sub.subs_type == "weekly":
+                    new_next_payment = add_weeks(temp_date, int(sub.frequency))
+                    query = Subscription.update(payment_date = temp_date, next_payment = new_next_payment, paid = False, due = False).where(Subscription.id == sub.id) 
+                    query.execute()
+
+                elif sub.subs_type == "monthly":
+                    new_next_payment = add_months(temp_date, int(sub.frequency))
+                    query = Subscription.update(payment_date = temp_date, next_payment = new_next_payment, paid = False, due = False).where(Subscription.id == sub.id) 
+                    query.execute()
+
+                elif sub.subs_type == "yearly":
+                    new_next_payment = add_years(temp_date, int(sub.frequency))
+                    query = Subscription.update(payment_date = temp_date, next_payment = new_next_payment, paid = False, due = False).where(Subscription.id == sub.id) 
+                    query.execute()
+
+            elif (sub.next_payment - date.today()).days <= 0 and sub.paid == False:
+                query = Subscription.update(due = True).where(Subscription.id == sub.id)
+                query.execute() 
+
             subs_list = {
                 'id': sub.id,
                 'name': sub.name,
@@ -101,7 +127,8 @@ def subscription():
                 'last_payment': sub.payment_date.strftime('%A %d %b %Y'),
                 'next_payment': sub.next_payment.strftime('%A %d %b %Y'),
                 'description': sub.description,
-                'paid': sub.paid
+                'paid': sub.paid,
+                'due': sub.due
             }
 
             subs_arr.append(subs_list)
@@ -150,7 +177,8 @@ def subs_delete(id):
                     'last_payment': sub.payment_date.strftime('%A %d %b %Y'),
                     'next_payment': sub.next_payment.strftime('%A %d %b %Y'),
                     'description': sub.description,
-                    'paid': sub.paid
+                    'paid': sub.paid,
+                    'due': sub.due
                 }
 
                 subs_arr.append(subs_list)
@@ -179,7 +207,7 @@ def status(id):
     query = Subscription.update(paid = not sub.paid).where(Subscription.id == id)
 
     if query.execute():
-        subs_obj = Subscription.select().where(Subscription.user_id == user_id).order_by(Subscription.id.desc())
+        subs_obj = Subscription.select().where(Subscription.user_id == user_id).order_by(Subscription.id.asc())
         subs_arr = []
         if subs_obj:
             for sub in subs_obj:
@@ -202,7 +230,8 @@ def status(id):
                     'last_payment': sub.payment_date.strftime('%A %d %b %Y'),
                     'next_payment': sub.next_payment.strftime('%A %d %b %Y'),
                     'description': sub.description,
-                    'paid': sub.paid
+                    'paid': sub.paid,
+                    'due': sub.due
                 }
 
                 subs_arr.append(subs_list)
@@ -222,7 +251,7 @@ def status(id):
 
         return jsonify(responseObj), 400
 
-@features_api_blueprint.route('/sub_data/<id>', methods=['POST'])
+@features_api_blueprint.route('/sub_data/<id>', methods=['GET'])
 @jwt_required
 def get_sub_data(id):
     user_id = get_jwt_identity()
@@ -234,7 +263,7 @@ def get_sub_data(id):
         'description': sub.description,
         'frequency': sub.frequency,
         'subs_type': sub.subs_type,
-        'payment_date': sub.payment_date
+        'payment_date': sub.payment_date,
         
     }
     
@@ -288,5 +317,9 @@ def edit(id):
         }
 
         return jsonify(responseObj), 400
+
+
+
+
 
 

@@ -36,6 +36,7 @@ class Subscription(BaseModel):
     frequency = pw.IntegerField(unique=False)
     paid = pw.BooleanField(default=False)
     next_payment = pw.DateField(unique=False)
+    due = pw.BooleanField(default=False)
 
     def validate(self):
         if self.subs_type == "daily": 
