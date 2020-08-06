@@ -9,6 +9,7 @@ import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css';
 import axios from 'axios'
 import { useHistory } from 'react-router-dom'
+import logo from '../logo.PNG'
 
 function LoginPage() {
     const [loginData, setLoginData] = useState({
@@ -78,16 +79,21 @@ function LoginPage() {
         <div>
             <ToastContainer closeButton={false} autoClose={5000} style={{marginTop: '54px'}}/>
             <TopNavBar title="Login" backpath="/"/>
-            <div id="login-container">
-                <form id="login" className={classes.root} noValidate onSubmit={handleSubmit}>
-                    <TextField className={classes.margin} type="text" label="Username" name="username" onChange={handleInput} value={username}/>
-                    <TextField className={classes.margin} type="password" label="Password" name="password" onChange={handleInput} value={password}/>
-                    <ColorButton type="submit" variant="contained" color="primary">
-                                Login
-                    </ColorButton>
-                </form>
+            <div style={{display: 'flex', flexDirection: 'column'}}>
+                <div style={{width: '100vw', height: '60vh'}}>
+                    <img style={{width: '200px', position: 'absolute', left: '50%', top: '30%', transform:'translate(-50%, -50%)'}}src={logo} />
+                </div>
+                <div id="login-container">
+                    <form id="login" className={classes.root} noValidate onSubmit={handleSubmit}>
+                        <TextField className={classes.margin} type="text" label="Username" name="username" onChange={handleInput} value={username}/>
+                        <TextField className={classes.margin} type="password" label="Password" name="password" onChange={handleInput} value={password}/>
+                        <ColorButton type="submit" variant="contained" color="primary">
+                                    Login
+                        </ColorButton>
+                    </form>
+                </div>
             </div>
-        </div>
+            </div>
     )
 }
 

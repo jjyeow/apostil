@@ -15,6 +15,7 @@ import IconButton from '@material-ui/core/IconButton';
 import { blue } from '@material-ui/core/colors'
 import EditRoundedIcon from '@material-ui/icons/EditRounded';
 import BottomNavBar from '../components/BottomNavBar'
+import Loading from '../components/Loading'
 import axios from 'axios';
 
 const useStyles = makeStyles({
@@ -205,9 +206,35 @@ function HomePage() {
 
     
     if (isLoading) {
-        return <div><h1>LOADING</h1></div>
+        return <Loading />
     }
 
+    if (userSubs.length == 0) {
+        return (
+            <div>
+                <div style={{display: 'flex', justifyContent:'space-between'}}>
+                    <div style={{margin: '20px 20px 5px 20px', fontFamily: 'Merriweather, serif'}}>
+                        <h4 style={{margin:'0'}}>Welcome back,</h4>
+                        <h4 style={{margin:'2px auto 0px auto'}}>{username}</h4>
+                    </div>
+                    <div style={{margin: '20px 20px 5px 20px'}}>
+                        <h5 style={{ margin: '0', fontFamily: 'Merriweather, serif', textAlign: 'right', color: 'gray'}}>Monthly</h5>
+                        <h4 style={{ margin: '2px auto 0px auto', fontFamily: 'Merriweather, serif'}}>RM{(Math.round(monthlyAmount*100)/100).toFixed(2)}</h4>
+                    </div>
+                </div>
+                <h1 style={{
+                        fontFamily: 'Arvo, serif',
+                        opacity: '0.4',
+                        height: '70vh',
+                        margin: '0, 20px, 0, 20px',
+                        paddingTop: '30vh',
+                        textAlign: 'center'
+                    }}>No Subscriptions yet!</h1>
+                
+                <BottomNavBar addpath="/add" settingspath="/settings" />
+            </div>
+        )
+    }
 
     return (
         <div>

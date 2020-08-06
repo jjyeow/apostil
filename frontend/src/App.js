@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.css';
-import { Route } from 'react-router-dom'
+import { Route, withRouter } from 'react-router-dom'
 import CoverPage from './pages/CoverPage'
 import LoginPage from './pages/LoginPage'
 import SignUpPage from './pages/SignUpPage'
@@ -11,24 +11,61 @@ import Settings from './pages/Settings'
 import { ToastContainer } from 'react-toastify'
 import AnimatedSwitch from './AnimatedSwitch'
 
+const routes = [
+  {
+      component: CoverPage,
+      path: "/"
+  },
 
-function App() {
+  {
+      component: LoginPage,
+      path: '/login'
+  },
+
+  {
+    component: SignUpPage,
+    path: '/signup'
+  },
+  
+  {
+    component: HomePage,
+    path: '/home'
+  },
+
+  {
+    component: AddSubs,
+    path: '/add'
+  },
+
+  {
+    component: EditSubs,
+    path: '/edit'
+  },
+
+  {
+    component: Settings,
+    path: '/settings'
+  },
+
+]
+
+const App = withRouter(({location}) =>  {
   return (
       <div>
         <ToastContainer closeButton={false} autoClose={5000} style={{marginTop: '54px'}} />
-        <Route exact path="/" component={CoverPage} />
-        <Route path="/login" component={LoginPage} />
-        <Route path="/signup" component={SignUpPage} />
-        <AnimatedSwitch>
-          <Route path="/home" component={HomePage} />
+        <AnimatedSwitch location={location}>
+            {routes.map(route => {
+              return (
+                <Route exact 
+                  key={route.path}
+                  path={route.path}
+                  component={route.component}
+                  />
+              )
+            })}
         </AnimatedSwitch>
-        <AnimatedSwitch>
-          <Route path="/add" component={AddSubs} />
-        </AnimatedSwitch>
-        <Route path="/edit" component={EditSubs} />
-        <Route path="/settings" component={Settings} />
       </div>
   );
-}
+})
 
 export default App;

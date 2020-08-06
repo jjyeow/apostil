@@ -71,11 +71,6 @@ label.Mui-focused {
   color: white !important;
 } */
 
-#login-container {
-  top: 55px;
-  position: fixed;
-  width: 100%;
-}
 
 #login {
   width: 80vw;

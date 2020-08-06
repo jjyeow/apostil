@@ -84,7 +84,9 @@ def subscription():
     if subs_obj:
         for sub in subs_obj: 
             str_amount = ""
-            if sub.subs_type == "yearly" and sub.amount is not None:
+            if sub.amount == 0:
+                str_amount = None
+            elif sub.subs_type == "yearly" and sub.amount is not None:
                 str_amount = "RM" + str(sub.amount) + "/y"
                 monthly_amount = monthly_amount + (sub.amount/12)
             elif sub.subs_type == "monthly" and sub.amount is not None:
