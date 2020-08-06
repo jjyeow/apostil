@@ -41,9 +41,6 @@ function LoginPage() {
         .then(result => {
             localStorage.setItem('jwt', result.data.token)
             history.push(`/home`)
-            customToast.success(result.data.message, {
-                boxShadow: '2px 2px 20px 2px rgba(0,0,0,0.3)'
-            })
         })
         .catch(error => {
             console.log(error.response)

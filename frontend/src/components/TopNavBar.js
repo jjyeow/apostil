@@ -14,7 +14,8 @@ const navbar_style = {
     lineHeight: '54px',
     top: 0,
     left: 0,
-    right: 0
+    right: 0,
+    fontFamily:'Arvo, serif'
     
 }
 

@@ -52,7 +52,8 @@ function AddSubs() {
         width: '75vw',
         height: '20vh',
         textAlign: 'center',
-        fontSize: '10vw'
+        fontSize: '10vw',
+        fontFamily: 'Crete Round, serif'
     }
 
     const handleInput = e => {
@@ -135,7 +136,7 @@ function AddSubs() {
     }))(Button);
     
 
-    const enabled = subsInfo.name.length > 0  && subsInfo.amount.length > 0 && subsInfo.frequency.length > 0 && subsInfo.subs_type.length > 0
+    const enabled = subsInfo.name.length > 0  && subsInfo.frequency.length > 0 && subsInfo.subs_type.length > 0
     return(
         <div>
             <TopNavBar title="" backpath="/home" />
@@ -161,10 +162,12 @@ function AddSubs() {
                                     style={moneyInputStyle}/>
                     <p style={{ position: "absolute", 
                                 bottom: 0, 
-                                fontSize: '2.5vw', 
+                                fontSize: '2.5vw',
+                                fontFamily: 'Recursive, sans-serif', 
+                                color: 'lightgray',
                                 width:'60vw',
-                                textAlign: 'center'}}>Put zero if your subscription is inconsistent</p>
-                    <p style={{position: "absolute", top: '3vw'}}>RM</p>
+                                textAlign: 'center'}}>Leave it empty if your subscription amount is inconsistent</p>
+                    <p style={{position: "absolute", top: '3vw', fontFamily: 'Recursive, sans-serif'}}>RM</p>
                 </div>  
                 <div style={{   width: '75vw',
                                 display: 'flex',

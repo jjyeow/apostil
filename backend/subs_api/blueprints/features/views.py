@@ -141,7 +141,8 @@ def subscription():
         responseObj = {
             'status': 'success',
             'subscriptions': subs_arr,
-            'monthly_amount': monthly_amount
+            'monthly_amount': monthly_amount,
+            'username': current_user.username
         }
 
         return jsonify(responseObj), 200
@@ -150,7 +151,8 @@ def subscription():
         responseObj = {
             'status': 'success but array is empty',
             'subscriptions': subs_arr,
-            'monthly_amount': monthly_amount
+            'monthly_amount': monthly_amount,
+            'username': current_user.username
         }
 
         return jsonify(responseObj), 200

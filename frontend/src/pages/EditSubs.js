@@ -44,7 +44,8 @@ function EditSubs(props) {
         width: '75vw',
         height: '20vh',
         textAlign: 'center',
-        fontSize: '10vw'
+        fontSize: '10vw',
+        fontFamily: 'Crete Round, serif'
     }
 
     const handleInput = e => {
@@ -179,9 +180,11 @@ function EditSubs(props) {
                     <p style={{ position: "absolute", 
                                 bottom: 0, 
                                 fontSize: '2.5vw', 
+                                fontFamily: 'Recursive, sans-serif',
+                                color: 'lightgray',
                                 width:'60vw',
                                 textAlign: 'center'}}>Put zero if your subscription is inconsistent</p>
-                    <p style={{position: "absolute", top: '3vw'}}>RM</p>
+                    <p style={{position: "absolute", top: '3vw', fontFamily: 'Recursive, sans-serif'}}>RM</p>
                 </div>  
                 <div style={{   width: '75vw',
                                 display: 'flex',

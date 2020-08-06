@@ -9,6 +9,7 @@ import AddSubs from './pages/AddSubs'
 import EditSubs from './pages/EditSubs'
 import Settings from './pages/Settings'
 import { ToastContainer } from 'react-toastify'
+import AnimatedSwitch from './AnimatedSwitch'
 
 
 function App() {
@@ -18,8 +19,12 @@ function App() {
         <Route exact path="/" component={CoverPage} />
         <Route path="/login" component={LoginPage} />
         <Route path="/signup" component={SignUpPage} />
-        <Route path="/home" component={HomePage} />
-        <Route path="/add" component={AddSubs} />
+        <AnimatedSwitch>
+          <Route path="/home" component={HomePage} />
+        </AnimatedSwitch>
+        <AnimatedSwitch>
+          <Route path="/add" component={AddSubs} />
+        </AnimatedSwitch>
         <Route path="/edit" component={EditSubs} />
         <Route path="/settings" component={Settings} />
       </div>

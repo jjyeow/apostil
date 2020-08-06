@@ -14,6 +14,7 @@ import MuiDialogContent from '@material-ui/core/DialogContent';
 import IconButton from '@material-ui/core/IconButton';
 import { blue } from '@material-ui/core/colors'
 import EditRoundedIcon from '@material-ui/icons/EditRounded';
+import BottomNavBar from '../components/BottomNavBar'
 import axios from 'axios';
 
 const useStyles = makeStyles({
@@ -61,11 +62,18 @@ const useStyles = makeStyles({
     },
 
     duePos: {
+        width: '100%',
         position: 'absolute',
-        border: 'solid 1px black',
+        fontWeight: 'bold',
+        fontSize: '60px',
+        opacity: '0.3',
+        textAlign: 'center',
         padding: 3,
-        right: '30px',
-        bottom: '-2px'
+        fontFamily: 'Bree Serif, serif',
+        top: '50%',
+        left:'50%',
+        transform: 'translate(-50%,-50%) rotate(-30deg)',
+        color: 'red'
     }
 });
 
@@ -125,6 +133,7 @@ function HomePage() {
     const [modal, setModal] = useState({})
     const [isLoading, setIsLoading] = useState(true)
     const [monthlyAmount, setMonthlyAmount] = useState(0)
+    const [username, setUsername] = useState('')
 
     const handleOpen = (subs) => {
         setOpen(true)
@@ -186,6 +195,7 @@ function HomePage() {
         .then(result => {
             setUserSubs(result.data.subscriptions)
             setMonthlyAmount(result.data.monthly_amount)
+            setUsername(result.data.username)
             setIsLoading(false)
         })
         .catch(err => {
@@ -201,14 +211,16 @@ function HomePage() {
 
     return (
         <div>
-            <ToastContainer closeButton={false} autoClose={5000} style={{marginTop: '54px'}}/>
-            <Link to="/add">
-                <button>Add</button>
-            </Link>
-            <Link to="/settings">
-                <button>Settings</button>
-            </Link>
-            <h1 style={{fontFamily: 'Merriweather, serif'}}>{(Math.round(monthlyAmount*100)/100).toFixed(2)}</h1>
+            <div style={{display: 'flex', justifyContent:'space-between'}}>
+                <div style={{margin: '20px 20px 5px 20px', fontFamily: 'Merriweather, serif'}}>
+                    <h4 style={{margin:'0'}}>Welcome back,</h4>
+                    <h4 style={{margin:'2px auto 0px auto'}}>{username}</h4>
+                </div>
+                <div style={{margin: '20px 20px 5px 20px'}}>
+                    <h5 style={{ margin: '0', fontFamily: 'Merriweather, serif', textAlign: 'right', color: 'gray'}}>Monthly</h5>
+                    <h4 style={{ margin: '2px auto 0px auto', fontFamily: 'Merriweather, serif'}}>RM{(Math.round(monthlyAmount*100)/100).toFixed(2)}</h4>
+                </div>
+            </div>
             {userSubs.map(subs => (
                 <Card className={classes.root} >
                 <CardActions style={{position: 'relative'}}>
@@ -223,8 +235,8 @@ function HomePage() {
                             </Typography>
                             <Typography className={classes.pos}>Next Payment: {subs.next_payment.toUpperCase()}</Typography>
                             <Typography className={classes.pos}>{subs.str_amount}</Typography>
-                            {subs.paid ? <Typography className={classes.paidPos}>Paid</Typography> : null}
                             {subs.due ? <Typography className={classes.duePos}>Due</Typography> : null}
+                            {subs.paid ? <Typography className={classes.paidPos}>Paid</Typography> : null}
                         </CardContent>
                     </Button>
                     <Button className={classes.closePos} name={subs.id} onClick={handleDelete}>
@@ -251,7 +263,7 @@ function HomePage() {
             </DialogTitle>
             <DialogContent dividers>
                 <Typography gutterBottom>
-                    <table style={{margin: 'auto', fontFamily: 'Crete Round, serif' }} >
+                    <table style={{margin: 'auto', fontFamily: 'Crete Round, serif'}} >
                         <tr>
                             <td style={{padding: '8px 10px 0 0'}}>Next Payment: </td>
                             <td style={{padding: '8px 0 0 0'}}>{modal.next_payment}</td>
@@ -266,7 +278,7 @@ function HomePage() {
                         </tr>
 
                         <tr>
-                            <td style={{padding: '8px 10px 0 0'}}>Description: </td>
+                            <td style={{padding: '8px 10px 0 0', verticalAlign: 'top'}}>Description: </td>
                             <td style={{padding: '8px 0 0 0'}}>{!modal.description ? "No description" : modal.description}</td>
                         </tr>
                     </table>
@@ -279,7 +291,8 @@ function HomePage() {
                 {modal.paid ? "Unpaid" : "Paid" }
             </ColorButton>
         </Dialog>
-
+        <div style={{display: 'block', height: '100px'}}></div>
+        <BottomNavBar addpath="/add" settingspath="/settings" />     
 
         </div>
     )
