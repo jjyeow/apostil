@@ -93,7 +93,7 @@ function AddSubs() {
 
         axios({
             method: 'POST',
-            url: 'http://localhost:5000/api/v1/features/',
+            url: 'https://apostil.herokuapp.com/api/v1/features/',
             data: {
                 name: subsInfo.name,
                 amount: subsInfo.amount,

@@ -84,7 +84,7 @@ function EditSubs(props) {
         }
         axios({
             method: 'post',
-            url: `http://localhost:5000/api/v1/features/edit/${props.location.state.data}`,
+            url: `https://apostil.herokuapp.com/api/v1/features/edit/${props.location.state.data}`,
             data: {
                 name: initialSub.name,
                 amount: initialSub.amount,
@@ -116,7 +116,7 @@ function EditSubs(props) {
     const get_subs = () => {
         axios({
             method: 'get',
-            url: `http://localhost:5000/api/v1/features/sub_data/${props.location.state.data}`,
+            url: `https://apostil.herokuapp.com/api/v1/features/sub_data/${props.location.state.data}`,
             headers: {
                 Authorization: `Bearer ${jwt}`
             },

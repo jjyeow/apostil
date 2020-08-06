@@ -76,7 +76,7 @@ function SignUpPage() {
         } else {            
             axios({
                 method: 'POST',
-                url: 'http://apostil.herokuapp.com/api/v1/users/signup',
+                url: `https://apostil.herokuapp.com/api/v1/users/signup`,
                 data: {
                     username: data.username,
                     first_name: data.first_name,

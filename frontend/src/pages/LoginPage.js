@@ -33,7 +33,7 @@ function LoginPage() {
         e.preventDefault()
         axios({
             method: 'POST',
-            url: 'http://localhost:5000/api/v1/users/login',
+            url: `https://apostil.herokuapp.com/api/v1/users/login`,
             data: {
                 username: loginData.username,
                 password: loginData.password

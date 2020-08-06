@@ -150,7 +150,7 @@ function HomePage() {
         const subsId = e.currentTarget.name
         axios({
             method: 'post',
-            url: `http://localhost:5000/api/v1/features/subs_delete/${subsId}`,
+            url: `https://apostil.herokuapp.com/api/v1/features/subs_delete/${subsId}`,
             headers: {
                 Authorization: `Bearer ${jwt}`
             },
@@ -170,7 +170,7 @@ function HomePage() {
         const modalId = e.currentTarget.name
         axios({
             method: 'post',
-            url: `http://localhost:5000/api/v1/features/status/${modalId}`,
+            url: `https://apostil.herokuapp.com/api/v1/features/status/${modalId}`,
             headers: {
                 Authorization: `Bearer ${jwt}`
             },
@@ -188,7 +188,7 @@ function HomePage() {
     useEffect(() => {
         axios({
             method: 'get',
-            url: 'http://localhost:5000/api/v1/features/subscriptions',
+            url: 'https://apostil.herokuapp.com/api/v1/features/subscriptions',
             headers: {
                 Authorization: `Bearer ${jwt}`
             },
