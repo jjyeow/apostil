@@ -33,3 +33,4 @@ wcwidth==0.1.7
 webassets==2.0
 webencodings==0.5.1
 Werkzeug==1.0.1
+peewee-db-evolve==3.7.6
